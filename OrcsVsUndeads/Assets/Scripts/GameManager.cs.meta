@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9b7db4b6c77ffcd43a63a47021ba454f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_PersistentViewDataDictionary: {instanceID: 0}
+  - tile: {fileID: 1059988207362518, guid: 4977d170215d85444a24ae0a92ad9f94, type: 2}
+  - parent: {fileID: 1068349113899960, guid: c840050697a80e94491279c681bd997f, type: 2}
+  executionOrder: 0
+  icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
