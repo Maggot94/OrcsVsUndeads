@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,15 +11,16 @@ public class Tile : MonoBehaviour {
     private TileEdit tileEdit;
 
     private bool isTaken;
+
+    public delegate void EnemyDetected();
+    public event EnemyDetected OnDetection;
     //
-  
 
     // Use this for initialization
     private void Awake()
     {
-     
        turretSpawner =  GameObject.FindObjectOfType<TurretSpawner>();
-        tileEdit = gameObject.GetComponent<TileEdit>();
+       tileEdit = gameObject.GetComponent<TileEdit>();
     }
     void Start () {
 		
@@ -37,7 +39,14 @@ public class Tile : MonoBehaviour {
         }
 
     }
-
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy") && OnDetection != null)
+        {
+            
+            OnDetection();
+        }
+    }
     public void TakeTile ()
     {
         isTaken = true;
