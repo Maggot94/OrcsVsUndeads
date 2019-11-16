@@ -12,10 +12,11 @@ public class Tile : MonoBehaviour {
 
     private bool isTaken;
 
-    public delegate void EnemyDetected();
+    public delegate void EnemyDetected(GameObject enemigo);
     public event EnemyDetected OnDetection;
     //
-
+    public delegate void EnemyLeft(GameObject enemigo);
+    public event EnemyLeft OnExit;
     // Use this for initialization
     private void Awake()
     {
@@ -44,7 +45,15 @@ public class Tile : MonoBehaviour {
         if (other.CompareTag("Enemy") && OnDetection != null)
         {
             
-            OnDetection();
+            OnDetection(other.gameObject);
+        }
+    }
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Enemy") && OnExit != null)
+        {
+
+            OnExit(other.gameObject);
         }
     }
     public void TakeTile ()
@@ -56,6 +65,5 @@ public class Tile : MonoBehaviour {
     {
         return isTaken;
     }
-    
    
 }

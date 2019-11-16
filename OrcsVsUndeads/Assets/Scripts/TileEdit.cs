@@ -40,4 +40,8 @@ public class TileEdit : MonoBehaviour {
             once = false;
         }
 	}
+    public bool GetisNotInteractable ()
+    {
+        return isNotInteractable;
+    }
 }

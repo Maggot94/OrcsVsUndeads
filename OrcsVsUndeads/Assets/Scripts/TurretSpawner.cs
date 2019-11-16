@@ -19,6 +19,9 @@ public class TurretSpawner : MonoBehaviour {
 
     [SerializeField]
     private GameObject panel;
+
+    [SerializeField]
+    private float offsetYModel;
 	// Use this for initialization
 	void Start () {
 		
@@ -51,11 +54,11 @@ public class TurretSpawner : MonoBehaviour {
                 activeTileScript.TakeTile();
                 if (x == 0)
                 {
-                    Instantiate(turretMelee, new Vector3 (atTransform.position.x, atTransform.position.y + 0.34f , atTransform.position.z ), atTransform.rotation);
+                    Instantiate(turretMelee, new Vector3 (atTransform.position.x, atTransform.position.y + offsetYModel , atTransform.position.z ), turretMelee.transform.rotation);
                 }
                 if (x == 1)
                 {
-                    Instantiate(turretRange, new Vector3(atTransform.position.x, atTransform.position.y + 0.34f, atTransform.position.z), atTransform.rotation);
+                    Instantiate(turretRange, new Vector3(atTransform.position.x, atTransform.position.y + offsetYModel, atTransform.position.z), turretRange.transform.rotation);
                 }
 
             }
