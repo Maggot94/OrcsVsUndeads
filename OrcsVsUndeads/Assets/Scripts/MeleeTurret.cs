@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretRanged : MonoBehaviour {
+public class MeleeTurret : MonoBehaviour {
     [SerializeField]
     private float Radius;
 
     private List<Tile> tiles;
+
+	private List<GameObject> reportedTiles;
 
     private List<GameObject> targets;
 
@@ -17,15 +19,16 @@ public class TurretRanged : MonoBehaviour {
 
     private float elapsedTime;
     [SerializeField]
-    private GameObject bullet;
-    //
-    private Transform bulletSpawner;
+    private GameObject attackRange;
 
+	private bool firstAttack;
+    //
 	// Use this for initialization
 	void Start () {
-        bulletSpawner = gameObject.transform.GetChild(1);
         targets = new List<GameObject>();
         tiles = new List<Tile>();
+		reportedTiles = new List<GameObject>();
+		firstAttack = true;
         Collider[] tilesColider  = Physics.OverlapSphere(transform.position, Radius);
          for (int i = 0; i < tilesColider.Length; i++)
             {
@@ -54,29 +57,36 @@ public class TurretRanged : MonoBehaviour {
             if (targets[0] == null)
             {
                targets.RemoveAt(0);
+			   reportedTiles.RemoveAt(0);
                return;
             }
             attacking = true;
             if (targets[0] != null)
             {
-                transform.LookAt(new Vector3(targets[0].transform.position.x, transform.position.y, targets[0].transform.position.z));
+                //transform.LookAt(new Vector3(targets[0].enemy.transform.position.x, transform.position.y, targets[0].enemy.transform.position.z));
             }
             if (attacking)
             {
-                if (elapsedTime == rechargeTime)
+                /*if (elapsedTime == rechargeTime)
                 {
-                    Shoot();
-                }
+                }*/
                 elapsedTime -= Time.deltaTime;
                 if (elapsedTime <= 0)
                 {
                     elapsedTime = rechargeTime;
+					if (!firstAttack) {
+                    	Swing();
+					} else {
+						firstAttack = false;
+					}
                 }
             }
         }
         else
         {
             attacking = false;
+			firstAttack = true;
+			elapsedTime = 0f;
         }
         
 	}
@@ -85,16 +95,24 @@ public class TurretRanged : MonoBehaviour {
         if (targets.Contains(enemy))
         {
            targets.Insert(targets.IndexOf(enemy),enemy);
+		   reportedTiles.Insert(targets.IndexOf(enemy),tile);
+
         } else
         {
             targets.Add(enemy);
-
+			reportedTiles.Add(tile);
         }
     }
-    private void removeTarget (GameObject enemy, GameObject tile)
-    {
+    private void removeTarget (GameObject enemy, GameObject tile) {
+
         if (targets.Contains(enemy))
         {
+			 if(targets.IndexOf(enemy) != targets.LastIndexOf(enemy))
+			 {
+				reportedTiles.RemoveAt(targets.LastIndexOf(enemy));
+			 } else {
+				reportedTiles.RemoveAt(targets.IndexOf(enemy));
+			 } 
             targets.Remove(enemy);
         }
     }
@@ -105,10 +123,9 @@ public class TurretRanged : MonoBehaviour {
      Gizmos.DrawWireSphere(transform.position, Radius);
     }
 
-    private void Shoot ()
+    private void Swing ()
     {
-       Quaternion targetRotation = Quaternion.LookRotation(targets[0].transform.position - bulletSpawner.position);
-       GameObject actualBullet = Instantiate(bullet, bulletSpawner.position, targetRotation);
-       actualBullet.GetComponent<Projectile>().StartMovement(targets[0]);
+      transform.LookAt(new Vector3(reportedTiles[0].transform.position.x, transform.position.y, reportedTiles[0].transform.position.z));
+	  Instantiate(attackRange, reportedTiles[0].transform.position, Quaternion.identity);
     }
 }
