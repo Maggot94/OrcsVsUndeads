@@ -154,5 +154,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Radius: 1.7
-  rechargeTime: 5
+  rechargeTime: 1
   bullet: {fileID: 1924283473696898, guid: 0ca00c142d573c349a4cf968c355e28c, type: 2}

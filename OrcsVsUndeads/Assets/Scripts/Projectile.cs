@@ -47,11 +47,10 @@ public class Projectile : MonoBehaviour {
         moving = true;
         target = t;
     }
-    public void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.CompareTag("Enemy"))
+     private void OnTriggerEnter(Collider other) {
+         if(other.gameObject.CompareTag("Enemy"))
         {
-            Destroy(collision.gameObject);
+            Destroy(other.gameObject);
             Destroy(gameObject);
         }
     }

@@ -14,7 +14,7 @@ public class FollowPath : MonoBehaviour
 
     #region Public Variables
     public MovementType Type = MovementType.MoveTowards; // Movement type used
-    public MovementPath MyPath; // Reference to Movement Path Used
+    private MovementPath MyPath; // Reference to Movement Path Used
     public float Speed = 1; // Speed object is moving
     public float MaxDistanceToGoal = .1f; // How close does it have to be to the point to be considered at point
     #endregion //Public Variables
@@ -30,8 +30,13 @@ public class FollowPath : MonoBehaviour
         //Make sure there is a path assigned
         if (MyPath == null)
         {
-            Debug.LogError("Movement Path cannot be null, I must have a path to follow.", gameObject);
-            return;
+            GameObject[] paths = GameObject.FindGameObjectsWithTag("Path");
+            MovementPath[] possiblePaths = new MovementPath[paths.Length];
+           for (int i = 0; i < paths.Length; i++)
+           {
+               possiblePaths[i] = paths[i].GetComponent<MovementPath>();
+           }
+           MyPath = possiblePaths[Random.Range(0, possiblePaths.Length)];
         }
 
         //Sets up a reference to an instance of the coroutine GetNextPathPoint
